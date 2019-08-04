@@ -8,7 +8,7 @@ class SplashPage extends StatefulWidget {
   _SplashPageState createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   Widget _buildEmailField() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.0),
@@ -226,6 +226,11 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
@@ -246,30 +251,50 @@ class _SplashPageState extends State<SplashPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                      'Log In',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 34,
+                  FadeAndSlideIn(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text(
+                        'Log In',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 34,
+                        ),
                       ),
                     ),
+                    $this: this,
+                    delay: Duration(milliseconds: 0),
                   ),
-                  _buildEmailField(),
+                  FadeAndSlideIn(
+                    $this: this,
+                    child: _buildEmailField(),
+                    delay: Duration(milliseconds: 500),
+                  ),
                   SizedBox(
                     height: 15.0,
                   ),
-                  _buildPasswordRow(),
+                  FadeAndSlideIn(
+                    $this: this,
+                    child: _buildPasswordRow(),
+                    delay: Duration(milliseconds: 500),
+                  ),
                   SizedBox(
                     height: 20,
                   ),
-                  _buildLoginBtn(),
-                  SizedBox(height: 20),
-                  _buildORrow(),
-                  SizedBox(height: 20),
-                  _buildFBLoginBtn(),
+                  FadeAndSlideIn(
+                    $this: this,
+                    child: Column(
+                      children: <Widget>[
+                        _buildLoginBtn(),
+                        SizedBox(height: 20),
+                        _buildORrow(),
+                        SizedBox(height: 20),
+                        _buildFBLoginBtn(),
+                      ],
+                    ),
+                    delay: Duration(milliseconds: 800),
+                  ),
                   SizedBox(height: 30),
                   _buildAnimatedSignUpView(),
                 ],
@@ -277,5 +302,32 @@ class _SplashPageState extends State<SplashPage> {
             ],
           ),
         ));
+  }
+}
+
+class FadeAndSlideIn extends StatelessWidget {
+  final Widget child;
+  final $this;
+  final Duration delay;
+
+  FadeAndSlideIn({this.child, this.$this, this.delay});
+
+  @override
+  Widget build(BuildContext context) {
+    AnimationController _animationController = AnimationController(
+        vsync: $this, duration: Duration(milliseconds: 500));
+    Animation _fadeAnimation =
+        CurvedAnimation(parent: _animationController, curve: Curves.easeOut);
+    Animation _offsetAnimation =
+        Tween<Offset>(begin: Offset(0, 0.5), end: Offset.zero)
+            .animate(_animationController);
+    Future.delayed(delay).then((_) {
+_animationController.forward();
+    });
+
+    return SlideTransition(
+      position: _offsetAnimation,
+      child: FadeTransition(opacity: _fadeAnimation, child: child),
+    );
   }
 }
