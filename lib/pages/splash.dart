@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -95,43 +97,185 @@ class _SplashPageState extends State<SplashPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(
-      fit: StackFit.loose,
-      children: <Widget>[
-        Positioned(
-          height: MediaQuery.of(context).size.height,
-          child: Image.asset(
-            'assets/images/background.png',
+  Widget _buildLoginBtn() {
+    return FlatButton(
+      onPressed: () {},
+      child: Container(
+        alignment: Alignment.center,
+        width: MediaQuery.of(context).size.width,
+        height: 60,
+        decoration: BoxDecoration(
+          color: Color(0xFFB79B7E),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(
+          'LOG IN',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.white,
+            letterSpacing: 0.9,
+            fontWeight: FontWeight.w700,
           ),
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+    );
+  }
+
+  Widget _buildORrow() {
+    return Row(
+      children: <Widget>[
+        Container(
+          color: Colors.white12,
+          margin: EdgeInsets.symmetric(horizontal: 15),
+          height: 1,
+          width: (MediaQuery.of(context).size.width - 90) / 2,
+        ),
+        Container(
+          width: 30,
+          alignment: Alignment.center,
+          child: Text(
+            'OR',
+            style: TextStyle(
+                color: Colors.white70, fontSize: 10, letterSpacing: 1),
+          ),
+        ),
+        Container(
+          color: Colors.white12,
+          margin: EdgeInsets.symmetric(horizontal: 15),
+          height: 1,
+          width: (MediaQuery.of(context).size.width - 90) / 2,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFBLoginBtn() {
+    return FlatButton(
+      onPressed: () {},
+      child: Container(
+        alignment: Alignment.center,
+        width: MediaQuery.of(context).size.width,
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.white24,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Text(
-                'Log In',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 34),
+            Icon(FontAwesomeIcons.facebookSquare, color: Colors.white),
+            SizedBox(width: 10),
+            Text(
+              'LOG IN WITH FACEBOOK',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+                letterSpacing: 0.9,
+                fontWeight: FontWeight.w700,
               ),
             ),
-            _buildEmailField(),
-            SizedBox(
-              height: 20.0,
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAnimatedSignUpView() {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
+      height: 140,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(35), topRight: Radius.circular(35))),
+      child: Container(
+        padding: EdgeInsets.only(top: 30.0, left: 20, right: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'New user?',
+              style: TextStyle(
+                  color: Color(0xFFB79B7E),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700),
             ),
-            _buildPasswordRow(),
-            SizedBox(
-              height: 20,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  'Sign up',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 34),
+                ),
+                IconButton(
+                  icon: Icon(
+                    FontAwesomeIcons.arrowCircleRight,
+                    color: Color(0xFFB79B7E),
+                  ),
+                  onPressed: () {},
+                )
+              ],
             )
           ],
         ),
-      ],
-    ));
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        resizeToAvoidBottomPadding: false,
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+          child: Stack(
+            fit: StackFit.loose,
+            children: <Widget>[
+              Positioned(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Image.asset(
+                  'assets/images/background.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      'Log In',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 34,
+                      ),
+                    ),
+                  ),
+                  _buildEmailField(),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  _buildPasswordRow(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  _buildLoginBtn(),
+                  SizedBox(height: 20),
+                  _buildORrow(),
+                  SizedBox(height: 20),
+                  _buildFBLoginBtn(),
+                  SizedBox(height: 30),
+                  _buildAnimatedSignUpView(),
+                ],
+              ),
+            ],
+          ),
+        ));
   }
 }
