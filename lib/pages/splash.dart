@@ -211,6 +211,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
   Widget _buildAnimatedSignUpView() {
     return AnimatedContainer(
+      curve: Curves.easeOutSine,
       duration: Duration(milliseconds: 500),
       height: _signUpHeight,
       width: MediaQuery.of(context).size.width,
